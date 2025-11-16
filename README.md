@@ -23,7 +23,7 @@ termu-setup-storage
 ```
 pkg install wget -y
 ```
-# 3) Download Installtion script and make it execuatble
+# 3) Download Installation script and make it execuatble
 
 ```
 wget https://raw.githubusercontent.com/kavyamali/qemuontermux-debian/main/installdebian_raw.sh
@@ -33,7 +33,7 @@ wget https://raw.githubusercontent.com/kavyamali/qemuontermux-debian/main/instal
 chmod +x installdebian_raw.sh
 ```
 
-# 4) Launch the Installtion Script:
+# 4) Launch the Installation Script:
 
 ```
 ./installdebian_raw.sh
