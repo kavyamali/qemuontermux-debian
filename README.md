@@ -1,5 +1,5 @@
-# Debian On Termux- QEMU
-A Debain 13 build preinstalled with termux OVMF TianoCore EFI firmware. The build has full ```systemd``` integration and comes preinstalled with SSH and Basic System Utilities.
+# Preinstalled Debain 13 on Termux QEMU
+A Debain 13 netinstall build preinstalled with termux OVMF TianoCore EFI firmware. The build has full ```systemd``` integration and comes preinstalled with SSH and Basic System Utilities.
 
 
 # Installation Steps (Android 10+)
