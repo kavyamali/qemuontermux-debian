@@ -45,6 +45,7 @@ qemu-system-aarch64 \
     -M virt -cpu max \
     -m 2048 -smp 4 \
     -nographic \
+    -boot c \
     -device virtio-gpu-pci \
     -device usb-ehci,id=usb_ctrl \
     -device usb-kbd,bus=usb_ctrl.0 \
@@ -71,6 +72,7 @@ To use VNC with QEMU, remove the ```-nographic``` flag and add the vnc port. For
 qemu-system-aarch64 \
     -M virt -cpu max \
     -m 4096 -smp 4 \
+    -boot c \
     -vnc 127.0.0.1:1 \
     -device virtio-gpu-pci \
     -device usb-ehci,id=usb_ctrl \
