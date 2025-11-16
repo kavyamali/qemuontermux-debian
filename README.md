@@ -1,4 +1,4 @@
-# Preinstalled Debain 13 on Termux QEMU
+# Preinstalled Debian 13 on Termux QEMU
 A Debain 13 netinstall build preinstalled with termux OVMF TianoCore EFI firmware. The build has full ```systemd``` integration and comes preinstalled with SSH and Basic System Utilities.
 
 
