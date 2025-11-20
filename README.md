@@ -205,7 +205,7 @@ Uninstall:
 wget https://raw.githubusercontent.com/kavyamali/qemuontermux-debian/82391d5a01775b92a130341ec155b668c308c758/scripts/audio/uninstall/sox-tcp-uninstall.sh
 ```
 ```
-chmod +X sox-tcp-uninstall.sh
+chmod +x sox-tcp-uninstall.sh
 ```
 ```
 ./sox-tcp-uninstall.sh
