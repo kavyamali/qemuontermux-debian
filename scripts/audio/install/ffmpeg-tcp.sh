@@ -39,12 +39,11 @@ EOF
 cat >/usr/local/bin/audio-stream.sh <<EOF
 #!/bin/bash
 set -e
-INPUT_DEVICE="loop_capture"
-nohup ffmpeg -nostdin \
+exec ffmpeg -nostdin \
     -f alsa -i loop_capture \
     -ac 2 -ar 48000 \
-    -f s16le tcp://0.0.0.0:8000?listen=1 \ 
-    >/root/ffmpeg.log 2>&1 &
+    -f s16le tcp://0.0.0.0:8000?listen=1 \
+    >>/root/ffmpeg.log 2>&1
 EOF
 chmod +x /usr/local/bin/audio-stream.sh
 cat >/etc/systemd/system/audio-stream.service <<EOF
