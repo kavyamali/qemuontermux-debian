@@ -9,6 +9,7 @@ rm -f /etc/systemd/system/aloop.service
 rm -f /usr/local/bin/audio-stream.sh
 rm -f /root/ffmpeg.log
 rm -f /root/ffmpeg.pid
+rm -f /etc/asound.conf
 systemctl daemon-reloads
 
 #apt remove -y ffmpeg alsa-utils || true
