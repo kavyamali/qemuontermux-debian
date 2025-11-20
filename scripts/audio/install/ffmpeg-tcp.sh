@@ -14,7 +14,20 @@ ExecStart=/sbin/modprobe snd-aloop
 [Install]
 WantedBy=sound.target
 EOF
-###CHANGE YOUR PORT BELOW
+cat >/etc/asound.conf <<EOF
+pcm.!default {
+    type plug
+    slave.pcm "loop_capture"
+}
+
+pcm.loop_capture {
+    type hw
+    card Loopback
+    device 1
+    subdevice 0
+}
+EOF
+###CONFIGURE YOUR PORT BELOW
 cat >/usr/local/bin/audio-stream.sh <<EOF
 #!/bin/bash
 set -e
@@ -49,3 +62,4 @@ systemctl enable aloop.service
 systemctl enable audio-stream.service
 systemctl start aloop.service
 systemctl start audio-stream.service
+alsactl init
