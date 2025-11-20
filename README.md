@@ -141,7 +141,7 @@ It starts a TCP stream at port 8000(configurable in the config) at system level 
 Install:
 
 ```
-wget https://githubusercontent.com/kavyamali/qemuontermux-debian/main/scripts/audio/install/ffmpeg-tcp.sh
+wget https://raw.githubusercontent.com/kavyamali/qemuontermux-debian/main/scripts/audio/install/ffmpeg-tcp.sh
 ```
 ```
 chmod +x ffmpeg-tcp.sh
@@ -173,7 +173,7 @@ Once installed and setup, the stream can be connected via a client on the localh
 Uninstall:
 
 ```
-wget https://githubusercontent.com/kavyamali/qemuontermux-debian/main/scripts/audio/install/ffmpeg-tcp-remove.sh
+wget https://raw.githubusercontent.com/kavyamali/qemuontermux-debian/main/scripts/audio/install/ffmpeg-tcp-remove.sh
 ```
 ```
 chmod +x ffmpeg-tcp-remove.sh
@@ -190,7 +190,7 @@ This method takes much less storage space, and takes less installtation time.
 Install:
 
 ```
-wget https://githubusercontent.com/kavyamali/qemuontermux-debian/main/scripts/audio/install/sox-tcp.sh
+wget https://raw.githubusercontent.com/kavyamali/qemuontermux-debian/main/scripts/audio/install/sox-tcp.sh
 ```
 ```
 chmod +x sox-tcp.sh
