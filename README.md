@@ -1,5 +1,5 @@
 # Preinstalled Debian 13 on Termux QEMU
-A Debain 13 netinstall build preinstalled with termux OVMF TianoCore EFI firmware. The build has full ```systemd``` integration and comes preinstalled with SSH and Basic System Utilities.
+A Debain 13 netinstall build preinstalled with termux OVMF TianoCore EFI firmware. The build has full ```systemd``` integration and comes preinstalled with SSH and Basic System Utilities. Can be used to run lightweight docker images, and some networking. GUI is almost unusable, or is extremely slow when works. Works better for devices with exposed KVM or Google Pixel phones with pKVM. CLI works perfectly.
 
 
 # Installation Steps (Android 10+)
@@ -199,6 +199,7 @@ chmod +x sox-tcp.sh
 ./sox-tcp.sh
 ```
 The launch command is same as above.
+
 Uninstall:
 
 ```
@@ -210,10 +211,70 @@ chmod +x sox-tcp-uninstall.sh
 ```
 ./sox-tcp-uninstall.sh
 ```
+Method 3) Direct PulseAudio (NOT RECOMMENDED, ONLY WORKS ON SELECT DEVICES)
+
+If your device still allows you to load opensl es modules on termux for pulseaudio, typically devices with Android Version<12, here is how to set up pulseaudio streaming:
+
+Termux side setup: 
+
+```
+pkg install pulseaudio
+pkill pulseaudio
+rm -rf $TMPDIR/pulse-*
+export XDG_RUNTIME_DIR=$TMPDIR
+pulseaudio --start --exit-idle-time=-1
+```
+Some Samsung devices running OneUI 6.1+ can try preloading the modules to make it work:
+```
+LD_PRELOAD=/system/lib64/libskcodec.so pulseaudio --start --exit-idle-time=-1
+```
+
+IMPORTANT: VERIFY YOUR DEVICE CAN RUN PULSEAUDIO BEFORE PROCEEDING:
+
+```
+pactl info
+```
+If the output shows "auto_null" or "null_sink", your device does not allow pulseaudio to access opensl es. Do not proceed, it's pointless.
+
+
+Launch QEMU:
+
+```
+qemu-system-aarch64 \
+  -M virt -cpu max \
+  -m 2048 -smp 4 \
+  -nographic \
+  -boot c \
+  -device virtio-gpu-pci \
+  -device usb-ehci,id=usb_ctrl \
+  -device usb-kbd,bus=usb_ctrl.0 \
+  -device usb-tablet,bus=usb_ctrl.0 \
+  -drive if=virtio,format=qcow2,file=debian.qcow2 \
+  -bios QEMU_EFI.fd \
+  -netdev user,id=net0,hostfwd=tcp::2222-:22 \
+  -device virtio-net-device,netdev=net0 \
+  -audiodev pa,id=snd0 \
+  -device ich9-intel-hda \
+  -device hda-output,audiodev=snd0
+```
+
+In the VM(Debian side setup):
+
+Verify audio: 
+```
+speaker-test -t sine -f 440 -c 2
+```
+If termux pulseaudio receives and plays audio, you'll hear it.
+
+Uninstall: 
+
+Just revert the termux scripts by resetting pulseaudio or unsetting current exports.
+
 
 # Sources and referecnces:
 
-Tianocore EDKII: https:https://github.com/tianocore/edk2
+Tianocore EDKII: https: https://github.com/tianocore/edk2
 
-Simple Protocol Player:https://github.com/kaytat/SimpleProtocolPlayer
+Simple Protocol Player: https://github.com/kaytat/SimpleProtocolPlayer
 
+PR 24429: https://github.com/termux/termux-packages/pull/24429
