@@ -15,16 +15,24 @@ ExecStart=/sbin/modprobe snd-aloop
 WantedBy=sound.target
 EOF
 cat >/etc/asound.conf <<EOF
-pcm.!default {
+pcm.loop_playback {
     type plug
-    slave.pcm "loop_capture"
+    slave {
+        pcm "hw:Loopback,0,0"
+        channels 2
+        rate 48000
+        format S16_LE
+    }
 }
 
 pcm.loop_capture {
-    type hw
-    card Loopback
-    device 1
-    subdevice 0
+    type plug
+    slave {
+        pcm "hw:Loopback,1,0"
+        channels 2
+        rate 48000
+        format S16_LE
+    }
 }
 EOF
 ###CONFIGURE YOUR PORT BELOW
