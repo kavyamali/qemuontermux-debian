@@ -125,7 +125,95 @@ The ssh can then be connected from the host, by using the command:
 
 ```ssh test@127.0.0.1 -p 2222```
 
-# SOURCES:
+# NOTE: All the scripts and commands below are meant to be run in ```su -``` mode.
 
-Tianocore EDKII: https://github.com/tianocore/edk2
+# Setting up Internet:
+
+Copy all the commands in ```scripts/setup/internet.sh``` and run them in the VM.
+
+# Setting up the Audio:
+
+Method 1) Using a FFMPEG stream through TCP routed from through ALSA (Recommended)
+
+This method works on every device tested so far, and is the recommended as pulseaudio is broken on many devices after android updates.
+It starts a TCP stream at port 8000(configurable in the config) at system level on boot, which is routed to ALSA using the loopback module.
+
+Install:
+
+```
+wget https://raw.githubusercontent.com/kavyamali/qemuontermux-debian/82391d5a01775b92a130341ec155b668c308c758/scripts/audio/install/ffmpeg-tcp.sh
+```
+```
+chmod +x ffmpeg-tcp.sh
+```
+```
+./ffmpeg-tcp.sh
+```
+
+Launch:
+
+```
+qemu-system-aarch64 \
+    -M virt -cpu max \
+    -m 2048 -smp 4 \
+    -nographic \
+    -boot c \
+    -device virtio-gpu-pci \
+    -device usb-ehci,id=usb_ctrl \
+    -device usb-kbd,bus=usb_ctrl.0 \
+    -device usb-tablet,bus=usb_ctrl.0 \
+    -drive if=virtio,format=qcow2,file=debian.qcow2 \
+    -bios QEMU_EFI.fd \
+    -netdev user,id=net0,hostfwd=tcp::2222-:22,hostfwd=tcp::8000-:8000 \
+    -device virtio-net-device,netdev=net0
+```
+
+Once installed and setup, the stream can be connected via a client on the localhost. Apps like Simple Protocol Player work perfectly as a client. 
+
+Uninstall:
+
+```
+wget https://raw.githubusercontent.com/kavyamali/qemuontermux-debian/82391d5a01775b92a130341ec155b668c308c758/scripts/audio/uninstall/ffmpeg-tcp-remove.sh
+```
+```
+chmod +x ffmpeg-tcp-remove.sh
+```
+```
+./ffmpeg-tcp-remove.sh
+```
+
+Method 2) Using a SOX stream through TCP routed from through ALSA (Works only for CPUs with good scheduling, i.e, Snapdragon SOCs. Mediatek does not work.)
+
+As mentioned above, this method requires cpu with good scheduler, as alsa pipes may break due to low buffer on CPUs with improperly exposed schedulers/pipelines. Mediatek devices are not supported. Exynos/Google Tensor are untested.
+This method takes much less storage space, and takes less installtation time. 
+
+Install:
+
+```
+wget https://github.com/kavyamali/qemuontermux-debian/raw/82391d5a01775b92a130341ec155b668c308c758/scripts/audio/install/sox-tcp.sh
+```
+```
+chmod +x sox-tcp.sh
+```
+```
+./sox-tcp.sh
+```
+The launch command is same as above.
+Uninstall:
+
+```
+wget https://raw.githubusercontent.com/kavyamali/qemuontermux-debian/82391d5a01775b92a130341ec155b668c308c758/scripts/audio/uninstall/sox-tcp-uninstall.sh
+```
+```
+chmod +X sox-tcp-uninstall.sh
+```
+```
+./sox-tcp-uninstall.sh
+```
+
+# Sources and referecnces:
+
+Tianocore EDKII: https:https://github.com/tianocore/edk2
+
+Simple Protocol Player:https://github.com/kaytat/SimpleProtocolPlayer
 
