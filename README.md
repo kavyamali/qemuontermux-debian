@@ -228,6 +228,10 @@ Some Samsung devices running OneUI 6.1+ can try preloading the modules to make i
 ```
 LD_PRELOAD=/system/lib64/libskcodec.so pulseaudio --start --exit-idle-time=-1
 ```
+Oneplus devices that cannot load sles can preload this:
+```
+LD_PRELOAD=/system/lib64/libOpenSLES.so pulseaudio --start --exit-idle-time=-1
+```
 
 IMPORTANT: VERIFY YOUR DEVICE CAN RUN PULSEAUDIO BEFORE PROCEEDING:
 
