@@ -282,3 +282,5 @@ Tianocore EDKII: https: https://github.com/tianocore/edk2
 Simple Protocol Player: https://github.com/kaytat/SimpleProtocolPlayer
 
 PR 24429: https://github.com/termux/termux-packages/pull/24429
+
+Issue 27367: https://github.com/termux/termux-packages/issues/27367
