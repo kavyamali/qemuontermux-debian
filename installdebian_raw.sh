@@ -1,6 +1,6 @@
 pkg update -y
 pkg upgrade -y
-pkg install -y qemu-user-aarch64 openssh wget qemu-utils ovmf
+pkg install -y qemu-system-aarch64-headless openssh wget qemu-utils ovmf
 wget https://github.com/kavyamali/qemuontermux-debian/releases/download/qcow2/debian.qcow2.part.aa
 wget https://github.com/kavyamali/qemuontermux-debian/releases/download/qcow2/debian.qcow2.part.ab
 wget https://github.com/kavyamali/qemuontermux-debian/releases/download/qcow2/debian.qcow2.part.ac
