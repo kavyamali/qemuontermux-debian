@@ -211,7 +211,7 @@ chmod +x sox-tcp-uninstall.sh
 ```
 ./sox-tcp-uninstall.sh
 ```
-Method 3) Direct PulseAudio (NOT RECOMMENDED, ONLY WORKS ON SELECT DEVICES)
+Method 3) Direct PulseAudio TCP
 
 If your device still allows you to load opensl es modules on termux for pulseaudio, typically devices with Android Version<12, here is how to set up pulseaudio streaming:
 
@@ -222,7 +222,10 @@ pkg install pulseaudio
 pkill pulseaudio
 rm -rf $TMPDIR/pulse-*
 export XDG_RUNTIME_DIR=$TMPDIR
-pulseaudio --start --exit-idle-time=-1
+
+pulseaudio --start \
+  --exit-idle-time=-1 \
+  --load="module-native-protocol-tcp auth-ip-acl=127.0.0.1;10.0.2.0/24 auth-anonymous=1"
 ```
 Some Samsung devices running OneUI 6.1+ can try preloading the modules to make it work:
 ```
@@ -238,7 +241,7 @@ IMPORTANT: VERIFY YOUR DEVICE CAN RUN PULSEAUDIO BEFORE PROCEEDING:
 ```
 pactl info
 ```
-If the output shows "auto_null" or "null_sink", your device does not allow pulseaudio to access opensl es. Do not proceed, it's pointless.
+If the output shows "auto_null" or "null_sink", your device does not allow pulseaudio to access opensl es. Use ```AAudio``` instead.
 
 
 Launch QEMU:
@@ -257,16 +260,18 @@ qemu-system-aarch64 \
   -bios QEMU_EFI.fd \
   -netdev user,id=net0,hostfwd=tcp::2222-:22 \
   -device virtio-net-device,netdev=net0 \
-  -audiodev pa,id=snd0 \
-  -device ich9-intel-hda \
-  -device hda-output,audiodev=snd0
 ```
 
 In the VM(Debian side setup):
 
-Verify audio: 
 ```
-speaker-test -t sine -f 440 -c 2
+apt install pulseaudio
+logout
+```
+
+Verify audio: (requires alsa-utils)
+```
+PULSE_SERVER=tcp:10.0.2.2 speaker-test -t sine -f 440
 ```
 If termux pulseaudio receives and plays audio, you'll hear it.
 
